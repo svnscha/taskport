@@ -1,0 +1,13 @@
+{
+  "name": "powershell-demo",
+  "version": "1",
+  "description": "PowerShell script example. Requires PowerShell 7 (pwsh) on the worker.",
+  "command": ["pwsh", "-NoProfile", "-NonInteractive", "-File", "Demo.ps1", "-Message", "{message}"],
+  "inputs": {
+    "type": "object",
+    "properties": {"message": {"type": "string"}},
+    "required": ["message"],
+    "additionalProperties": false
+  },
+  "timeout_seconds": 30
+}

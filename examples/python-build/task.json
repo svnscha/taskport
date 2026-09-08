@@ -1,0 +1,23 @@
+{
+  "name": "python-build",
+  "version": "1",
+  "description": "Clone a Git revision, compile Python files, and upload a build ZIP. Requires Git.",
+  "command": ["{python}", "Build.py"],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "repository": {
+        "type": "string",
+        "description": "Git URL or repository path accessible to the worker"
+      },
+      "hash": {
+        "type": "string",
+        "pattern": "^[a-fA-F0-9]{40}([a-fA-F0-9]{24})?$",
+        "description": "Full Git commit hash available in the repository"
+      }
+    },
+    "required": ["repository", "hash"],
+    "additionalProperties": false
+  },
+  "timeout_seconds": 600
+}

@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.zip binary
+*.png binary
+*.jpg binary
+*.pdf binary
