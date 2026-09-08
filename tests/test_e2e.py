@@ -231,20 +231,23 @@ def test_wait_survives_server_restart_during_execution(cluster_factory, task_pac
 
 def test_script_failure_timeout_and_explicit_retry(cluster_factory, task_package):
     cluster = cluster_factory()
-    cluster.client.publish(task_package(timeout=0.4))
+    cluster.client.publish(task_package(timeout=30))
     worker = cluster.worker()
     failed = cluster.client.submit("demo", exit_code=7).wait(timeout=15)
     assert failed["status"] == "failed", cluster.logs()
     assert failed["exit_code"] == 7
     assert any(a["name"] == "_logs/stderr.log" for a in failed["artifacts"])
+    # Keep the normal failure independent of interpreter startup speed on busy runners.
+    cluster.client.publish(task_package(version="2", timeout=0.4))
     timed_out = cluster.client.submit("demo", delay=10).wait(timeout=15)
     assert timed_out["status"] == "failed", cluster.logs()
     assert timed_out["exit_code"] == 124
     assert "timed out" in timed_out["error"]
-    cluster.client.publish(task_package(version="2", timeout=10))
     retry = cluster.client.retry(failed["id"])
     assert retry.id != failed["id"]
-    assert retry.wait(timeout=10)["version"] == "1"
+    retried = retry.wait(timeout=15)
+    assert retried["version"] == "1"
+    assert retried["exit_code"] == 7
     assert worker.poll() is None
 
 
