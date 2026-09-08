@@ -4,25 +4,67 @@ build-backend = "hatchling.build"
 
 [project]
 name = "taskport"
-version = "0.1.0"
-description = "Small intranet task RPC with one-slot workers and central artifacts"
+dynamic = ["version"]
+description = "Simple self-hosted task RPC with a persistent queue, one-slot workers, and central artifacts"
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Sven Scharmentke" }]
+keywords = ["rpc", "task-queue", "workers", "intranet", "artifacts", "fastapi"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Build Tools",
+  "Topic :: System :: Distributed Computing",
+]
 dependencies = [
   "fastapi>=0.115,<1",
+  "pydantic>=2.10,<3",
   "uvicorn>=0.30,<1",
   "httpx>=0.27,<1",
   "jsonschema>=4.23,<5",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<10", "ruff>=0.11,<1", "build>=1.2,<2", "hatchling>=1.27,<2"]
+dev = [
+  "pytest>=8,<10", "ruff>=0.11,<1", "build>=1.2,<2",
+  "hatchling>=1.27,<2", "twine>=6.2,<7",
+  "editables>=0.5,<1",
+]
+
+[project.urls]
+Homepage = "https://github.com/svnscha/taskport"
+Repository = "https://github.com/svnscha/taskport"
+Documentation = "https://github.com/svnscha/taskport#readme"
+Issues = "https://github.com/svnscha/taskport/issues"
+Changelog = "https://github.com/svnscha/taskport/releases"
 
 [project.scripts]
 taskport = "taskport.cli:main"
 
+[tool.hatch.version]
+path = "src/taskport/__init__.py"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/taskport"]
+# Metadata 2.4 supports SPDX licenses and remains compatible with Twine 6.
+core-metadata-version = "2.4"
+
+[tool.hatch.build.targets.sdist]
+core-metadata-version = "2.4"
+include = [
+  "/src", "/tests", "/examples", "/docs", "/README.md", "/LICENSE",
+  "/pyproject.toml", "/requirements-dev.lock.txt",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

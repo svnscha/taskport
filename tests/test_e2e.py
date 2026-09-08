@@ -325,7 +325,7 @@ def test_builds_actual_git_revision_and_downloads_compiled_artifact(cluster_fact
                 "-c",
                 "core.autocrlf=false",
                 "-c",
-                "user.name=TaskPort Tests",
+                "user.name=taskport Tests",
                 "-c",
                 "user.email=taskport-test@example.invalid",
                 *arguments,

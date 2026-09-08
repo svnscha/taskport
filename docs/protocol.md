@@ -1,4 +1,4 @@
-# TaskPort HTTP protocol
+# taskport HTTP protocol
 
 All endpoints use JSON except package and artifact transfers. A configured bearer
 token is required on every API request. HTTP errors use `{"detail": ...}`.

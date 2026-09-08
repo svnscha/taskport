@@ -1,4 +1,4 @@
-"""Example task only: TaskPort itself has no Git or build-specific behavior."""
+"""Example task only: taskport itself has no Git or build-specific behavior."""
 
 import compileall
 import json

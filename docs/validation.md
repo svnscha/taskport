@@ -62,5 +62,5 @@ permissions. The application was not deployed as an OS service and no firewall,
 global Git, or machine-wide Python configuration was changed.
 
 Linux/macOS execution and multiple physical machines were not exercised in this
-environment. TaskPort's single-server and explicit-retry limitations are documented
+environment. taskport's single-server and explicit-retry limitations are documented
 in the README and protocol document.

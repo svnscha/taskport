@@ -1,4 +1,9 @@
-# TaskPort
+# taskport
+
+[![CI](https://github.com/svnscha/taskport/actions/workflows/ci.yml/badge.svg)](https://github.com/svnscha/taskport/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/taskport)](https://pypi.org/project/taskport/)
+[![Python](https://img.shields.io/pypi/pyversions/taskport)](https://pypi.org/project/taskport/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/svnscha/taskport/blob/main/LICENSE)
 
 Run named functions on intranet machines and collect their results and files on one server.
 
@@ -9,26 +14,38 @@ results, and artifacts. Workers download the assigned package version and execut
 it. Clients discover available functions, submit calls, and wait by polling a task GUID.
 Every HTTP request is independent; disconnecting a client does not cancel its task.
 
-TaskPort uses FastAPI, SQLite, and HTTPX. It does not require RabbitMQ, Redis,
+taskport uses FastAPI, SQLite, and HTTPX. It does not require RabbitMQ, Redis,
 ZeroMQ, Docker, a shared worker filesystem, or a CI server.
 
 ## Quick start
 
-Requires Python 3.11+ on the server, workers, and Python clients. These commands
-use PowerShell on Windows; the same CLI works on other platforms. This repository
-has been tested on Windows with Python 3.12 and PowerShell 7.
+Requires Python 3.11+ on the server, workers, and Python clients. Install the same
+package on Windows, Linux, or macOS:
 
-Install from this checkout on each participating machine:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install .
-.\.venv\Scripts\Activate.ps1
+```console
+python -m pip install taskport
+taskport --help
 ```
 
-Alternatively, install the wheel from `dist/` after building it. Each worker also
-needs the tools used by its function, such as PowerShell, Git, or a compiler.
-TaskPort itself does not install task-specific tools.
+Use an activated virtual environment if your system Python is managed by the OS.
+For a separate CLI environment, `pipx install taskport` also works. The module
+entry point `python -m taskport` is equivalent to `taskport`.
+
+For development, install from a checkout instead:
+
+```console
+python -m pip install -e '.[dev]'
+```
+
+Each worker also needs the tools used by its function, such as PowerShell, Git, or a compiler.
+taskport itself does not install task-specific tools.
+
+The commands below use PowerShell. In Bash or Zsh, replace
+`$env:TASKPORT_SERVER = '...'` with `export TASKPORT_SERVER='...'`, and likewise
+for `TASKPORT_TOKEN`. To use `./examples`, download and extract the
+[source archive](https://github.com/svnscha/taskport/archive/refs/heads/main.zip)
+or clone this repository on the machine that publishes task packages.
+Workers and clients only need the pip installation.
 
 **1. Start the server.** For a local demonstration:
 
@@ -198,9 +215,9 @@ JSON, or an artifact transfer failure makes the call fail. A failed script's ava
 logs and outputs are still uploaded. `_logs` is reserved; outputs cannot contain
 symlinks, junctions, or filenames that are unsafe on Windows.
 
-Scripts must wait for their own work before exiting. TaskPort is not a sandbox:
+Scripts must wait for their own work before exiting. taskport is not a sandbox:
 scripts run as the worker's OS account and can use its installed tools and credentials.
-The TaskPort token is not passed through the script environment.
+The taskport token is not passed through the script environment.
 
 ## Examples
 
@@ -262,7 +279,7 @@ Use `--max-artifact-mib` to change the server artifact limit.
 The shared token grants full access, including publishing executable task packages.
 Use this with trusted users and workers. Use HTTPS through a reverse proxy on networks
 where bearer tokens and code should not travel in clear text. Interactive API docs
-are at `/docs`; the wire contract is documented in [docs/protocol.md](docs/protocol.md).
+are at `/docs`; see the [HTTP protocol](https://github.com/svnscha/taskport/blob/main/docs/protocol.md).
 
 ## Development and verification
 
@@ -288,5 +305,17 @@ their own child process trees. They do not contact external Git servers.
 `.gitattributes` and `.editorconfig` enforce UTF-8/LF text conventions. Runtime data,
 virtual environments, test scratch files, and distribution outputs are ignored.
 
-See [docs/validation.md](docs/validation.md) for the tested environment, scenarios,
-and results.
+See the [validation notes](https://github.com/svnscha/taskport/blob/main/docs/validation.md)
+for the tested environment, scenarios, and results. GitHub Actions tests the installed
+wheel on Windows, Linux, and macOS with Python 3.11, 3.12, 3.13, and 3.14.
+
+## Releases
+
+Publishing a GitHub release runs the same build and test checks, then uploads the
+tested wheel and source distribution to PyPI using Trusted Publishing.
+See [releasing](https://github.com/svnscha/taskport/blob/main/docs/releasing.md)
+for setup and the release commands.
+
+## License
+
+[MIT](https://github.com/svnscha/taskport/blob/main/LICENSE).

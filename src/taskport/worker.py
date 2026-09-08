@@ -230,7 +230,7 @@ class Worker:
             except Exception as exc:
                 completion = Completion(exit_code=127, error=str(exc)[:8192])
                 with stderr_path.open("a", encoding="utf-8") as stream:
-                    stream.write(f"\nTaskPort worker error: {exc}\n")
+                    stream.write(f"\ntaskport worker error: {exc}\n")
 
             if not lease.valid() or self.stopped.is_set():
                 self.log(f"Execution ownership lost/stopped for {task_id}; keeping {run_dir}")

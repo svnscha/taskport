@@ -115,7 +115,7 @@ class Client:
     @staticmethod
     def _path(path):
         if not path.startswith("/") or path.startswith("//") or "://" in path:
-            raise ValueError("API and download paths must be relative to the TaskPort server")
+            raise ValueError("API and download paths must be relative to the taskport server")
         return path
 
     def request(

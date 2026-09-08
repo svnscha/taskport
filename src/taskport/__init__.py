@@ -1,4 +1,4 @@
-"""TaskPort: named remote calls and centrally stored artifacts."""
+"""taskport: named remote calls and centrally stored artifacts."""
 
 from taskport.client import Client
 

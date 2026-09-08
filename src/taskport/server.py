@@ -1,4 +1,4 @@
-"""TaskPort HTTP service. Execution always happens in separate workers."""
+"""taskport HTTP service. Execution always happens in separate workers."""
 
 import asyncio
 import hashlib
@@ -72,7 +72,7 @@ def create_app(
                 await monitor
 
     app = FastAPI(
-        title="TaskPort",
+        title="taskport",
         version=__version__,
         description="Named remote calls, one-slot workers, and central artifact storage.",
         lifespan=lifespan,
